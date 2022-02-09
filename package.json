@@ -1,0 +1,28 @@
+{
+  "name": "clean-code-e-clean-architecture",
+  "version": "1.0.0",
+  "description": "Clean Code e Clean Architecture Curso Branas",
+  "main": "index.ts",
+  "scripts": {
+    "tsc:init": "tsc --init",
+    "build": "tsc",
+    "test": "tsc && jest dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xkHeitor/Clean-Code-e-Clean-Architecture.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xkHeitor/Clean-Code-e-Clean-Architecture/issues"
+  },
+  "homepage": "https://github.com/xkHeitor/Clean-Code-e-Clean-Architecture#readme",
+  "dependencies": {
+    "typescript": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "jest": "^27.5.0"
+  }
+}
