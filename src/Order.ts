@@ -23,8 +23,35 @@ export class Cpf {
 	public value: string;
 
 	constructor (cpf: string) {
-		if (cpf?.length >= 11 || cpf?.length <= 14) throw 'cpf size is invalid';
+		if (cpf?.length < 11 || cpf?.length > 14) throw 'cpf size is invalid';
 		this.value = cpf;
+	}
+
+	public validateCPF (): boolean|number {
+		const cpfNumbers = this.removeString(this.value);
+		if (cpfNumbers.length != 11) return false;
+		const firstCheckDigit = this.calculateFirstCheckDigit(cpfNumbers);
+		return firstCheckDigit;
+	}
+
+	private removeString(value: string):string {
+		return value.replace(/\D/gim, '');
+	}
+
+	private inverterOrder(value:string): string {
+		return value.split("").reverse().join("");
+	}
+
+	private calculateFirstCheckDigit (cpf: string): number {
+		const numberOfDigits = 9;
+		const multiplicationInitiationNumber = 2;
+		const numbersToMultiply = this.inverterOrder(cpf.slice(0, numberOfDigits));		
+		let response = 0		
+		for(let count = 0; count < numberOfDigits; count++){
+			response += (parseInt(numbersToMultiply[count]) * (multiplicationInitiationNumber + count));
+		}
+
+		return response;
 	}
 
 }
