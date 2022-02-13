@@ -2,12 +2,16 @@ import { Cpf } from "./Order";
 
 describe('CPF', () => {
 
-    const standardCPF = '111.444.777-05';
+    it('Should be valid the CPF', () => {
+        const cpf = new Cpf('111.444.777-35');
+        const isValid = cpf.validateCPF();
+        expect(isValid).toBe(true);
+    });
 
-    it('Should calculate the first digit', () => {
-        const cpf = new Cpf(standardCPF);
-        const firstCheckDigit = cpf.validateCPF();
-        expect(firstCheckDigit).toBe(162);
+    it('Should be invalid the CPF', () => {
+        const cpf = new Cpf('111.444.777-18');
+        const isValid = cpf.validateCPF();
+        expect(isValid).toBe(false);
     });
 
 });
