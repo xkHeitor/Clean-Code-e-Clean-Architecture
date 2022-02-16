@@ -24,7 +24,7 @@ export default class Order {
 
     public getTotal(): number {
         let total = this.orderItems.reduce((total, item) => total + item.getTotal(), 0);
-        if (this.coupon) return ((total * this.coupon.percentage) / 100);
+        if (this.coupon) return total - ((total * this.coupon.percentage) / 100);
         return total;
     }
 
