@@ -27,7 +27,6 @@ export default class Cpf {
 		const digit2 = this.calculateDigit(cpf, this.factors.secondDigit);
 		let checkDigit = this.extractCheckDigit(cpf);
 		const calculatedDigit = `${digit1}${digit2}`;
-        console.log(checkDigit, calculatedDigit)
 		return checkDigit == calculatedDigit;
 	}
 
