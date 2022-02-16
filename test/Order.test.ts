@@ -7,6 +7,7 @@ describe("Order", () => {
         invalid: '111.444.777-18',
     };
 
+    const coupon = { code: 'APP35', percentage: 35 };
     const items = [
         { data: { id: 1, category: 'Computadores', description: 'SSD', price: 250 }, quantity: 2 },
         { data: {id: 2, category: 'Computadores', description: 'Mémoria', price: 100 }, quantity: 4 },
@@ -23,6 +24,15 @@ describe("Order", () => {
             order.addItems(item.data, item.quantity);
         }
         expect(order.getTotal()).toBe(4000);
+    });
+
+    it("Should create an order with three items with a discount coupon", () => {
+        const order = new Order(cpfs.valid);
+        order.addCoupon(coupon);
+        for(const item of items) {
+            order.addItems(item.data, item.quantity);
+        }
+        expect(order.getTotal()).toBe(2600);
     });
 
 });
