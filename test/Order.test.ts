@@ -1,3 +1,6 @@
+import Coupon from "../src/Coupon";
+import Dimension from "../src/Dimension";
+import Item from "../src/Item";
 import Order from "../src/Order";
 
 describe("Order", () => {
@@ -7,11 +10,12 @@ describe("Order", () => {
         invalid: '111.444.777-18',
     };
 
-    const coupon = { code: 'APP35', percentage: 35 };
+    const expiredCoupon = new Coupon('APP35', 35, new Date("2021-01-01T03:00:00"));
+    const coupon = new Coupon('APP35', 35);
     const items = [
-        { data: { id: 1, category: 'Computadores', description: 'SSD', price: 250 }, quantity: 2 },
-        { data: {id: 2, category: 'Computadores', description: 'Mémoria', price: 100 }, quantity: 4 },
-        { data: {id: 3, category: 'Computadores', description: 'GPU', price: 3100 }, quantity: 1 },
+        { id: 1, category: 'Computadores', description: 'SSD', price: 250, quantity: 2, dimension: new Dimension(100, 30, 10), weight: 3 },
+        { id: 2, category: 'Computadores', description: 'Mémoria', price: 100, quantity: 4, dimension: new Dimension(100, 50, 50), weight: 1 },
+        { id: 3, category: 'Computadores', description: 'GPU', price: 3100, quantity: 1, dimension: new Dimension(10, 10, 10), weight: 20 },
     ];
 
     it("Shouldn't create an order with invalid CPF", () => {
@@ -21,7 +25,7 @@ describe("Order", () => {
     it("Should create an order with three items", () => {
         const order = new Order(cpfs.valid);
         for(const item of items) {
-            order.addItems(item.data, item.quantity);
+            order.addItems(new Item(item.id, item.category, item.description, item.price), item.quantity);
         }
         expect(order.getTotal()).toBe(4000);
     });
@@ -30,9 +34,29 @@ describe("Order", () => {
         const order = new Order(cpfs.valid);
         order.addCoupon(coupon);
         for(const item of items) {
-            order.addItems(item.data, item.quantity);
+            order.addItems(new Item(item.id, item.category, item.description, item.price), item.quantity);
         }
         expect(order.getTotal()).toBe(2600);
+    });
+
+    it("Should create an order with three items with a expired discount coupon", () => {
+        const order = new Order(cpfs.valid, new Date("2022-01-01T03:00:00"));
+        order.addCoupon(expiredCoupon);
+        for(const item of items) {
+            order.addItems(new Item(item.id, item.category, item.description, item.price), item.quantity);
+        }
+        expect(order.getTotal()).toBe(4000);
+    });
+
+    it("Should create an order with three items and calculate freight", () => {
+        const order = new Order(cpfs.valid);
+        for(const item of items) {
+            order.addItems(new Item(item.id, item.category, item.description, item.price, item.dimension, item.weight), item.quantity);
+        }
+        
+        const freight = order.freight.getTotal(); 
+        const total = order.getTotal() + freight;
+        expect(total).toBe(4300);
     });
 
 });
