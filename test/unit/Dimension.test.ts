@@ -1,4 +1,4 @@
-import Dimension from "../src/Dimension";
+import Dimension from "../../src/domain/entity/Dimension";
 
 describe('Dimension', () => {
     

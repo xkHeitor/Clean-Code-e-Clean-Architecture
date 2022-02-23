@@ -1,5 +1,5 @@
-import Dimension from "../src/Dimension";
-import Item from "../src/Item";
+import Dimension from "../../src/domain/entity/Dimension";
+import Item from "../../src/domain/entity/Item";
 
 describe('Item', () => {
 
