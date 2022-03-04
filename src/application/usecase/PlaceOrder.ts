@@ -21,8 +21,8 @@ export default class PlaceOrder {
             const coupon = this.couponRepository.getByCode(input.coupon);
             if(coupon) order.addCoupon(coupon);
         }
-        this.orderRepository.save(order);
         
+        this.orderRepository.save(order);
         const total = order.getTotal();
         const output = new PlaceOrderOutput(total);
         return output;
