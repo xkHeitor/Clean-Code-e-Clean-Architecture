@@ -6,7 +6,7 @@ export default class OrderCode {
         this.value = this.generateCode(date, sequence);
     }
 
-    generateCode(date: Date, sequence: number) {
+    generateCode(date: Date, sequence: number): string {
         const year = date.getFullYear();
         const completeTheSequence = (new String(sequence)).padStart(8, "0");
         return `${year}${completeTheSequence}`;
