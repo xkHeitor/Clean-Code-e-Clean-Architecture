@@ -59,4 +59,12 @@ describe("Order", () => {
         expect(total).toBe(4300);
     });
 
+    it("Should create an order with three items and calculate the code of order", () => {
+        const order = new Order(cpfs.valid, new Date("2021-03-01T10:00:00"), 1);
+        for(const item of items) {
+            order.addItems(new Item(item.id, item.category, item.description, item.price), item.quantity);
+        }
+        expect(order.code.value).toBe("202100000001");
+    });
+
 });

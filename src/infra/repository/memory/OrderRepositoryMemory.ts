@@ -13,4 +13,8 @@ export default class OrderRepositoryMemory implements OrderRepository {
         this.orders.push(order);
     }
 
+    count(): number {
+        return this.orders.length;
+    }
+
 }

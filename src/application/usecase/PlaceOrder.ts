@@ -10,7 +10,8 @@ export default class PlaceOrder {
     constructor(readonly itemRepository: ItemRepository, readonly orderRepository: OrderRepository, readonly couponRepository: CouponRepository) {}
 
     execute(input: PlaceOrderInput): PlaceOrderOutput {
-        const order = new Order(input.cpf);
+        const sequence = this.orderRepository.count() + 1;
+        const order = new Order(input.cpf, input.issueDate, sequence);
         for (const orderItem of input.orderItems) {
             const item = this.itemRepository.getById(orderItem.idItem);
             if(!item) throw new Error("Item not found");
@@ -24,7 +25,7 @@ export default class PlaceOrder {
         
         this.orderRepository.save(order);
         const total = order.getTotal();
-        const output = new PlaceOrderOutput(total);
+        const output = new PlaceOrderOutput(total, order.code.value);
         return output;
     }
 
