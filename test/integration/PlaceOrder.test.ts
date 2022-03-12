@@ -5,7 +5,7 @@ import PlaceOrder from "../../src/application/usecase/place-order/PlaceOrder";
 
 describe('Place Order', () => {
 
-    it('Should place an order with discount coupon', () => {
+    it('Should place an order with discount coupon', async () => {
         const itemRepository = new ItemRepositoryMemory();
         const orderRepository = new OrderRepositoryMemory();
         const CouponRepository = new CouponRepositoryMemory();
@@ -20,11 +20,11 @@ describe('Place Order', () => {
             coupon: "APP35",
             issueDate: new Date("2021-03-01T10:00:00")
         };
-        const placeOrderOutput = placeOrder.execute(placeOrderInput);
+        const placeOrderOutput = await placeOrder.execute(placeOrderInput);
         expect(placeOrderOutput.total).toBe(2600)
     });
 
-    it('Should place an order with discount coupon and calculate the code of order', () => {
+    it('Should place an order with discount coupon and calculate the code of order', async () => {
         const itemRepository = new ItemRepositoryMemory();
         const orderRepository = new OrderRepositoryMemory();
         const CouponRepository = new CouponRepositoryMemory();
@@ -39,8 +39,8 @@ describe('Place Order', () => {
             coupon: "APP35",
             issueDate: new Date("2021-03-01T10:00:00")
         };
-        placeOrder.execute(placeOrderInput)
-        const placeOrderOutput = placeOrder.execute(placeOrderInput);
+        await placeOrder.execute(placeOrderInput)
+        const placeOrderOutput = await placeOrder.execute(placeOrderInput);
         expect(placeOrderOutput.code).toBe("202100000002");
     });
 

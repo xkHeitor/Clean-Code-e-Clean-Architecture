@@ -13,7 +13,7 @@ describe('Simulate Freight', () => {
                 { idItem: 3, quantity: 1 },
             ]
         };
-        const simulateFreightOutput = simulateFreight.execute(input);
+        const simulateFreightOutput = await simulateFreight.execute(input);
         expect(simulateFreightOutput.total).toBe(10)
     });
 
@@ -27,7 +27,7 @@ describe('Simulate Freight', () => {
                 { idItem: 3, quantity: 1 },
             ]
         };
-        expect(() => simulateFreight.execute(input)).toThrow(new Error("Item not found"));
+        expect(async () => await simulateFreight.execute(input)).rejects.toThrow(new Error("Item not found"));
     });
 
 });

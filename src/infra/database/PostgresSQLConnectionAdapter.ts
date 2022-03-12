@@ -13,4 +13,8 @@ export default class PostgresSQLConnectionAdapter implements Connection {
         return this.connection.query(stmt, params);
     }
 
+    async close(): Promise<void> {
+        this.connection.$pool.end();
+    }
+
 }
