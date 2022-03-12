@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/xkHeitor/Clean-Code-e-Clean-Architecture#readme",
   "dependencies": {
+    "pg-promise": "^10.11.1",
     "typescript": "^4.5.5"
   },
   "devDependencies": {
