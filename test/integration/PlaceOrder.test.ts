@@ -1,15 +1,31 @@
-import CouponRepositoryMemory from "../../src/infra/repository/memory/CouponRepositoryMemory";
-import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
 import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderRepositoryMemory";
 import PlaceOrder from "../../src/application/usecase/place-order/PlaceOrder";
+import Connection from "../../src/infra/database/Connection";
+import ItemRepository from "../../src/domain/repository/ItemRepository";
+import OrderRepository from "../../src/domain/repository/OrderRepository";
+import CouponRepository from "../../src/domain/repository/CouponRepository";
+import PostgresSQLConnectionAdapter from "../../src/infra/database/PostgresSQLConnectionAdapter";
+import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
+import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
+import CouponRepositoryDatabase from "../../src/infra/repository/database/CouponRepositoryDatabase";
+import CouponRepositoryMemory from "../../src/infra/repository/memory/CouponRepositoryMemory";
+
+let connection: Connection;
+let orderRepository: OrderRepository;
+let itemRepository: ItemRepository;
+let couponRepository: CouponRepository;
+
+beforeEach(() => {
+    connection = new PostgresSQLConnectionAdapter();
+    orderRepository = new OrderRepositoryMemory();
+    itemRepository = new ItemRepositoryDatabase(connection);
+    couponRepository = new CouponRepositoryDatabase(connection);
+});
 
 describe('Place Order', () => {
 
     it('Should place an order with discount coupon', async () => {
-        const itemRepository = new ItemRepositoryMemory();
-        const orderRepository = new OrderRepositoryMemory();
-        const CouponRepository = new CouponRepositoryMemory();
-        const placeOrder = new PlaceOrder(itemRepository, orderRepository, CouponRepository);
+        const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository);
         const placeOrderInput = {
             cpf: "111.444.777-35",
             orderItems: [
@@ -25,10 +41,7 @@ describe('Place Order', () => {
     });
 
     it('Should place an order with discount coupon and calculate the code of order', async () => {
-        const itemRepository = new ItemRepositoryMemory();
-        const orderRepository = new OrderRepositoryMemory();
-        const CouponRepository = new CouponRepositoryMemory();
-        const placeOrder = new PlaceOrder(itemRepository, orderRepository, CouponRepository);
+        const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository);
         const placeOrderInput = {
             cpf: "111.444.777-35",
             orderItems: [
@@ -44,4 +57,8 @@ describe('Place Order', () => {
         expect(placeOrderOutput.code).toBe("202100000002");
     });
 
+});
+
+afterEach(async () => {
+    await connection.close();
 });
