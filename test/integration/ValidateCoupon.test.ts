@@ -18,7 +18,7 @@ describe('Dimension', () => {
     
     it('Should validate if a coupon is valid', async () => {
         const validateCoupon = new ValidateCoupon(couponRepository);
-        const isValid = validateCoupon.execute("APP35");
+        const isValid = await validateCoupon.execute("APP35");
         expect(isValid).toBeTruthy();
     });
 
