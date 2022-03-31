@@ -1,31 +1,22 @@
-import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderRepositoryMemory";
 import PlaceOrder from "../../src/application/usecase/place-order/PlaceOrder";
+import RepositoryFactory from "../../src/domain/factory/RepositoryFactory";
 import Connection from "../../src/infra/database/Connection";
-import ItemRepository from "../../src/domain/repository/ItemRepository";
-import OrderRepository from "../../src/domain/repository/OrderRepository";
-import CouponRepository from "../../src/domain/repository/CouponRepository";
 import PostgresSQLConnectionAdapter from "../../src/infra/database/PostgresSQLConnectionAdapter";
-import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
-import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
-import CouponRepositoryDatabase from "../../src/infra/repository/database/CouponRepositoryDatabase";
-import CouponRepositoryMemory from "../../src/infra/repository/memory/CouponRepositoryMemory";
+import DatabaseRepositoryFactory from "../../src/infra/factory/DatabaseRepositoryFactory";
+import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFactory";
 
 let connection: Connection;
-let orderRepository: OrderRepository;
-let itemRepository: ItemRepository;
-let couponRepository: CouponRepository;
+let repositoryFactory: RepositoryFactory;
 
 beforeEach(() => {
     connection = new PostgresSQLConnectionAdapter();
-    orderRepository = new OrderRepositoryMemory();
-    itemRepository = new ItemRepositoryDatabase(connection);
-    couponRepository = new CouponRepositoryDatabase(connection);
+    repositoryFactory = new DatabaseRepositoryFactory(connection);
 });
 
 describe('Place Order', () => {
 
     it('Should place an order with discount coupon', async () => {
-        const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository);
+        const placeOrder = new PlaceOrder(repositoryFactory);
         const placeOrderInput = {
             cpf: "111.444.777-35",
             orderItems: [
@@ -41,7 +32,7 @@ describe('Place Order', () => {
     });
 
     it('Should place an order with discount coupon and calculate the code of order', async () => {
-        const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository);
+        const placeOrder = new PlaceOrder(repositoryFactory);
         const placeOrderInput = {
             cpf: "111.444.777-35",
             orderItems: [

@@ -1,23 +1,23 @@
 import SimulateFreight from "../../src/application/usecase/simulate-freight/SimulateFreight";
-import ItemRepository from "../../src/domain/repository/ItemRepository";
-import Connection from "../../src/infra/database/Connection";
 import PostgresSQLConnectionAdapter from "../../src/infra/database/PostgresSQLConnectionAdapter";
-import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
-import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
+import Connection from "../../src/infra/database/Connection";
+import RepositoryFactory from "../../src/domain/factory/RepositoryFactory";
+import DatabaseRepositoryFactory from "../../src/infra/factory/DatabaseRepositoryFactory";
+import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFactory";
 
 let connection: Connection;
-let itemRepository: ItemRepository;
+let repositoryFactory: RepositoryFactory;
 
 beforeEach(() => {
     connection = new PostgresSQLConnectionAdapter();
-    itemRepository = new ItemRepositoryDatabase(connection);
+    repositoryFactory = new DatabaseRepositoryFactory(connection);
 });
 
 
 describe('Simulate Freight', () => {
     
     it('Should simulate the freight of a order', async () => {
-        const simulateFreight = new SimulateFreight(itemRepository);
+        const simulateFreight = new SimulateFreight(repositoryFactory);
         const input = {
             orderItems: [
                 { idItem: 1, quantity: 2 },
@@ -30,7 +30,7 @@ describe('Simulate Freight', () => {
     });
 
     it('Should simulate the freight of a order and break for item not found', async () => {
-        const simulateFreight = new SimulateFreight(itemRepository);
+        const simulateFreight = new SimulateFreight(repositoryFactory);
         const input = {
             orderItems: [
                 { idItem: 1, quantity: 2 },
