@@ -28,7 +28,7 @@ describe('Place Order', () => {
             issueDate: new Date("2021-03-01T10:00:00")
         };
         const placeOrderOutput = await placeOrder.execute(placeOrderInput);
-        expect(placeOrderOutput.total).toBe(2600)
+        expect(placeOrderOutput.total).toBe(3200)
     });
 
     it('Should place an order with discount coupon and calculate the code of order', async () => {

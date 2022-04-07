@@ -6,7 +6,7 @@ export default class PostgresSQLConnectionAdapter implements Connection {
     private connection: any;
 
     constructor(){
-        this.connection = pgPromise()("postgres://postgres:1234@localhost:5432/postgres")
+        this.connection = pgPromise()("postgres://postgres:123@localhost:5432/postgres")
     }
 
     query(stmt: string, params: any = null): Promise<any> {
