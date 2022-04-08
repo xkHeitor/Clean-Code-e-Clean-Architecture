@@ -27,8 +27,8 @@ const items = [
 describe("Order repository", () => {
     
     it("should save a order", async () => {
-        orderRepository = new OrderRepositoryMemory();
-        // orderRepository = new OrderRepositoryDatabase(connection);
+        // orderRepository = new OrderRepositoryMemory();
+        orderRepository = new OrderRepositoryDatabase(connection);
         await orderRepository.clean();
         const order = new Order(cpf, new Date("2021-04-01T10:00:00"), 1);
         for(const item of items) {

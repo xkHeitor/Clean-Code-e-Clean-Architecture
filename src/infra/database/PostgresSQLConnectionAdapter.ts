@@ -9,12 +9,12 @@ export default class PostgresSQLConnectionAdapter implements Connection {
         this.connection = pgPromise()("postgres://postgres:123@localhost:5432/postgres")
     }
 
-    query(stmt: string, params: any = null): Promise<any> {
-        return this.connection.query(stmt, params);
+    async query(stmt: string, params: any = null): Promise<any> {
+        return await this.connection.query(stmt, params);
     }
 
     async close(): Promise<void> {
-        this.connection.$pool.end();
+        await this.connection.$pool.end();
     }
 
 }

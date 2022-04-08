@@ -32,7 +32,7 @@ export default class PlaceOrder {
             if(coupon) order.addCoupon(coupon);
         }
         
-        this.orderRepository.save(order);
+        await this.orderRepository.save(order);
         const total = order.getTotal();
         const output = new PlaceOrderOutput(total, order.code.value);
         return output;
