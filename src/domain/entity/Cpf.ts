@@ -1,6 +1,6 @@
 export default class Cpf {
  
-	public value: string;
+	private value: string;
 	private factors = {
 		firstDigit: 10,
 		secondDigit: 11,

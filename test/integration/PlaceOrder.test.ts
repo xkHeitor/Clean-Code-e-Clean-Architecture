@@ -8,9 +8,11 @@ import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFac
 let connection: Connection;
 let repositoryFactory: RepositoryFactory;
 
-beforeEach(() => {
+beforeEach(async () => {
     connection = new PostgresSQLConnectionAdapter();
     repositoryFactory = new DatabaseRepositoryFactory(connection);
+    const orderRepository = repositoryFactory.createOrderRepository();
+    await orderRepository.clean();
 });
 
 describe('Place Order', () => {
@@ -28,7 +30,7 @@ describe('Place Order', () => {
             issueDate: new Date("2021-03-01T10:00:00")
         };
         const placeOrderOutput = await placeOrder.execute(placeOrderInput);
-        expect(placeOrderOutput.total).toBe(3200)
+        expect(placeOrderOutput.total).toBe(2600)
     });
 
     it('Should place an order with discount coupon and calculate the code of order', async () => {

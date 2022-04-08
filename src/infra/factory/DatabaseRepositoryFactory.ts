@@ -5,6 +5,7 @@ import OrderRepository from "../../domain/repository/OrderRepository";
 import Connection from "../database/Connection";
 import CouponRepositoryDatabase from "../repository/database/CouponRepositoryDatabase";
 import ItemRepositoryDatabase from "../repository/database/ItemRepositoryDatabase";
+import OrderRepositoryDatabase from "../repository/database/OrderRepositoryDatabase";
 import OrderRepositoryMemory from "../repository/memory/OrderRepositoryMemory";
 
 export default class DatabaseRepositoryFactory implements RepositoryFactory {
@@ -20,7 +21,7 @@ export default class DatabaseRepositoryFactory implements RepositoryFactory {
     }
 
     createOrderRepository(): OrderRepository {
-        return new OrderRepositoryMemory();
+        return new OrderRepositoryDatabase(this.connection);
     }
 
 }

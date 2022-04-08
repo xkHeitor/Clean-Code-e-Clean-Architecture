@@ -7,11 +7,11 @@ import OrderItem from "./OrderItem";
 
 export default class Order {
 
-    private cpf: Cpf;
-    private orderItems: OrderItem[];
-    private coupon?: Coupon;
-    public freight: Freight;
+    readonly cpf: Cpf;
+    readonly orderItems: OrderItem[];
     readonly code: OrderCode;
+    public coupon?: Coupon;
+    public freight: Freight;
 
     constructor(cpf: string, readonly orderDate: Date = new Date(), readonly sequence: number = 1) {
         this.cpf = new Cpf(cpf);

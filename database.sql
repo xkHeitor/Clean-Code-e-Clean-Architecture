@@ -22,8 +22,8 @@ create table ccca.coupon (
 	primary key (code)
 );
 
-insert into ccca.coupon (code, percentage, expire_date) values ('APP35', 20, '2022-10-10T10:00:00');
-insert into ccca.coupon (code, percentage, expire_date) values ('APP35_EXPIRED', 20, '2020-10-10T10:00:00');
+insert into ccca.coupon (code, percentage, expire_date) values ('APP35', 35, '2022-10-10T10:00:00');
+insert into ccca.coupon (code, percentage, expire_date) values ('APP35_EXPIRED', 35, '2020-10-10T10:00:00');
 
 create table ccca.order (
 	id_order serial,
