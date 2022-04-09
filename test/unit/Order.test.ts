@@ -67,4 +67,16 @@ describe("Order", () => {
         expect(order.code.value).toBe("202100000001");
     });
 
+    it("should dont create a order with negative quantity", () => {
+        const order = new Order(cpfs.valid);
+        expect(() => order.addItems(new Item(1, "Computer", "CPU", 450), -3)).toThrow(new Error("Quantity must be positive"))
+    });
+
+    it("should dont create a order with duplicate item", () => {
+        const order = new Order(cpfs.valid);
+        const item = new Item(1, "Computer", "CPU", 450);
+        order.addItems(item, 1);
+        expect(() => order.addItems(item, 1)).toThrow(new Error("Duplicate item"))
+    });
+
 });

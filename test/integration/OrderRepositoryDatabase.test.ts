@@ -43,6 +43,21 @@ describe("Order repository", () => {
         expect(savedOrder.freight.getTotal()).toBe(300);
     });
 
+    it("should listing the orders", async () => {
+        orderRepository = new OrderRepositoryDatabase(connection);
+        await orderRepository.clean();
+        const order = new Order(cpf, new Date("2021-04-01T10:00:00"), 1);
+        for(const item of items) {
+            order.addItems(new Item(item.id, item.category, item.description, item.price, item.dimension, item.weight), item.quantity);
+        }
+        order.addCoupon(coupon);
+        await orderRepository.save(order);
+        await orderRepository.save(order);
+        await orderRepository.save(order);
+        const savedOrders = await orderRepository.getAll();
+        expect(savedOrders).toHaveLength(3);
+    });
+
 });
 
 afterEach(async () => {

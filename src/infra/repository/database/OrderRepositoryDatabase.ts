@@ -8,7 +8,7 @@ import Connection from "../../database/Connection";
 export default class OrderRepositoryDatabase implements OrderRepository {
 
     constructor(readonly connection: Connection) {}
-    
+       
     async getByCode(code: string): Promise<Order> {
         const [ orderData ] = await this.connection.query("select * from ccca.order where code = $1", [ code ]);
         if(!orderData) throw new Error("Order not found");
@@ -26,6 +26,29 @@ export default class OrderRepositoryDatabase implements OrderRepository {
             order.addCoupon(coupon);
         }
         return order;
+    }
+
+    async getAll(): Promise<Order[]> {
+        const ordersData = await this.connection.query("select * from ccca.order", []);
+        let orders: Order[] = [];
+        for(const orderData of ordersData) {
+            if(!orderData) throw new Error("Order not found");
+            const order = new Order(orderData.cpf, new Date(orderData.issue_date), orderData.sequence);
+            const orderItemsData = await this.connection.query("select * from ccca.order_item where id_order = $1", [ orderData.id_order ]);
+            for(const orderItemData of orderItemsData) {
+                const [ itemData ] = await this.connection.query("select * from ccca.item where id_item = $1", [ orderItemData.id_item ]);
+                const dimension = new Dimension(itemData.width, itemData.height, itemData.length);
+                const item = new Item(itemData.id_item, itemData.category, itemData.description, parseFloat(itemData.price), dimension, itemData.weight);
+                order.addItems(item, orderItemData.quantity);
+            }
+            if(orderData.coupon) {
+                const [ couponData ] = await this.connection.query("select * from ccca.coupon where code = $1", [ orderData.coupon ]);
+                const coupon = new Coupon(couponData.code, parseFloat(couponData.percentage), new Date(couponData.expire_date));
+                order.addCoupon(coupon);
+            }
+            orders.push(order);
+        }
+        return orders;
     }
 
     async save(order: Order): Promise<void> {

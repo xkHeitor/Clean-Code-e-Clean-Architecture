@@ -15,4 +15,8 @@ describe('Item', () => {
         expect(volume).toBe(100);
     });
 
+    it('should return exception if the weight the item is negative', () => {
+        expect(() => new Item(1, 'PC', 'GPU', 3450, new Dimension(100, 30, 10), -10)).toThrow(new Error("Invalid weight"));
+    });
+
 });

@@ -21,6 +21,8 @@ export default class Order {
     }
 
     public addItems(item: Item, quantity: number): void {
+        if(quantity < 0) throw new Error("Quantity must be positive");
+        if(this.orderItems.some(orderItem => orderItem.idItem == item.id)) throw new Error("Duplicate item");
         this.orderItems.push(new OrderItem(item.id, item.price, quantity));
         this.freight.addItem(item, quantity);
     }

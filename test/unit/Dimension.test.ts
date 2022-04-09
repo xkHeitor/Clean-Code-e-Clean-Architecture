@@ -8,4 +8,8 @@ describe('Dimension', () => {
         expect(volume).toBe(0.03);
     });
 
+    it("should return exception if the dimensions is negative", () => {
+        expect(() => new Dimension(100, -30, 10)).toThrow(new Error("Invalid dimensions"));
+    });
+
 });
