@@ -15,7 +15,7 @@ beforeEach(async () => {
     await orderRepository.clean();
 });
 
-describe("API", () => {
+describe.skip("API", () => {
 
     it("should test of API", async () => {
         const placeOrder = new PlaceOrder(repositoryFactory);
