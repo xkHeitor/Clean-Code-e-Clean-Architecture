@@ -6,7 +6,7 @@
   "scripts": {
     "tsc:init": "tsc --init",
     "build": "tsc",
-    "test": "clear; tsc && jest dist/",
+    "test": "clear; tsc && jest dist/ --runInBand",
     "main": "tsc && node ./dist/src/main"
   },
   "repository": {
