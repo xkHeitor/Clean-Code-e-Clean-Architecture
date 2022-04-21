@@ -5,17 +5,22 @@ import RepositoryFactory from "../../../domain/factory/RepositoryFactory";
 import ItemRepository from "../../../domain/repository/ItemRepository";
 import CouponRepository from "../../../domain/repository/CouponRepository";
 import OrderRepository from "../../../domain/repository/OrderRepository";
+import StockEntryRepository from "../../../domain/repository/StockRepository";
+import Mediator from "../../../infra/mediator/Mediator";
+import OrderPlaced from "../../../domain/event/OrderPlaced";
 
 export default class PlaceOrder {
 
     itemRepository: ItemRepository;
     couponRepository: CouponRepository;
     orderRepository: OrderRepository; 
+    stockEntryRepository: StockEntryRepository;
 
-    constructor(readonly repositoryFactory: RepositoryFactory) {
+    constructor(readonly repositoryFactory: RepositoryFactory, readonly mediator: Mediator = new Mediator()) {
         this.itemRepository = repositoryFactory.createItemRepository();
         this.couponRepository = repositoryFactory.createCouponRepository();
         this.orderRepository = repositoryFactory.createOrderRepository();
+        this.stockEntryRepository = repositoryFactory.createStockEntryRepository();
     }
 
     async execute(input: PlaceOrderInput): Promise<PlaceOrderOutput> {
@@ -35,6 +40,7 @@ export default class PlaceOrder {
         await this.orderRepository.save(order);
         const total = order.getTotal();
         const output = new PlaceOrderOutput(total, order.code.value);
+        await this.mediator.publish(new OrderPlaced(order));
         return output;
     }
 
